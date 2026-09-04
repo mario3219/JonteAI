@@ -49,30 +49,21 @@ std::vector<double> add(
   return C;
 }
 
-std::vector<double> softmax(
+std::vector<double> transpose(
     const std::vector<double>& A,
     std::size_t rows,
     std::size_t cols
 ) {
-    std::vector<double> C(A.size());
+    std::vector<double> AT(cols * rows);
 
     for (std::size_t i = 0; i < rows; ++i) {
-
-        double sum = 0.0;
-
-        // exponentiate and calculate row sum
         for (std::size_t j = 0; j < cols; ++j) {
-            C[i * cols + j] = std::exp(A[i * cols + j]);
-            sum += C[i * cols + j];
-        }
 
-        // divide every element by row sum
-        for (std::size_t j = 0; j < cols; ++j) {
-            C[i * cols + j] /= sum;
+            AT[j * rows + i] =
+                A[i * cols + j];
         }
     }
-
-    return C;
+    return AT;
 }
 
 #endif

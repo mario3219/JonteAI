@@ -9,7 +9,7 @@
 // relu
 #include <algorithm>
 
-#include <cnpy.h> // read from csv
+#include <cnpy.h> // read from npy
 #include "utils.h"
 #include "math.h"
 
@@ -24,6 +24,32 @@ std::vector<T> relu(const std::vector<T>& x)
         out[i] = std::max(T{0}, x[i]);
     }
     return out;
+}
+
+std::vector<double> softmax(
+    const std::vector<double>& A,
+    std::size_t rows,
+    std::size_t cols
+) {
+    std::vector<double> C(A.size());
+
+    for (std::size_t i = 0; i < rows; ++i) {
+
+        double sum = 0.0;
+
+        // exponentiate and calculate row sum
+        for (std::size_t j = 0; j < cols; ++j) {
+            C[i * cols + j] = std::exp(A[i * cols + j]);
+            sum += C[i * cols + j];
+        }
+
+        // divide every element by row sum
+        for (std::size_t j = 0; j < cols; ++j) {
+            C[i * cols + j] /= sum;
+        }
+    }
+
+    return C;
 }
 
 double cross_entropy(
@@ -53,6 +79,7 @@ int main() {
   fs::path src_dir = fs::current_path().parent_path();
   fs::path input_x = src_dir / "data" / "x.npy";
   fs::path input_y = src_dir / "data" / "y.npy";
+  fs::path out_loss = src_dir / "data" / "loss.npy";
 
   auto [x, x_shape] = read<double,double>(input_x);
   auto [y, y_shape] = read<int64_t,double>(input_y);
@@ -70,6 +97,14 @@ int main() {
   std::vector<double> W2(hidden_layer_size * num_classes);
   std::vector<double> b2(num_classes, 0.0);
 
+  std::vector<double> dL2out;
+  std::vector<double> dL1;
+  std::vector<double> dW1;
+  std::vector<double> dW2;
+  double db1;
+  double db2;
+
+
   for (double& w : W1) {
       w = dist(gen);
   }
@@ -80,10 +115,12 @@ int main() {
   double eta = 0.1;
   int iterations = 25000;
   int num_examples = x_shape[0];
-  std::vector<double> loss(num_examples, 0.0);
+  std::vector<double> loss(iterations, 0.0);
 
   std::vector<double> L0 = x;
-  //for (int i = 0; i <= iterations; i++) {
+  for (int i = 0; i < iterations; i++) {
+
+    std::cout << i << "/" << iterations << std::endl;
     
     std::vector<double> L1_in = add(
       matmul(L0, W1, x_shape[0], x_shape[1], hidden_layer_size),
@@ -101,9 +138,62 @@ int main() {
 
     std::vector<double> L2_out = softmax(
       L2_in, x_shape[0], num_classes
-    );
-    //loss[i] = cross_entropy(L2_out, y, num_examples, num_classes);
-    loss[0] = cross_entropy(L2_out, y, num_examples, num_classes);
-  //}
+    ); // shape x_shape[0], num_classes
+    loss[i] = cross_entropy(L2_out, y, num_examples, num_classes);
 
+    dL2out = L2_out; //shape num_examples, num_classes
+    for (std::size_t i = 0; i < num_examples; ++i) {
+        dL2out[i * num_classes + y[i]] -= 1.0;
+    }
+    for (double& val: dL2out) {
+      val = val/num_examples;
+    }
+    dW2 = matmul(
+      transpose(L1_out, x_shape[0], hidden_layer_size),
+      dL2out,
+      hidden_layer_size,
+      x_shape[0],
+      num_classes
+    );
+    db2 = accumulate(dL2out.begin(), dL2out.end(), 0.0, std::plus<double>());
+    dL1 = matmul(
+      dL2out,
+      transpose(W2, hidden_layer_size, num_classes),
+      num_examples,
+      num_classes,
+      hidden_layer_size
+    ); //shape num_classes, hidden_layer_size
+    for (double& val: dL1) {
+      if (val <= 0) {
+        val = 0;
+      }
+    }
+    dW1 = matmul(
+      transpose(x, x_shape[0], x_shape[1]),
+      dL1,
+      x_shape[1],
+      x_shape[0],
+      hidden_layer_size
+    ); //shape x_shape[1], hidden_layer_size
+    db1 = accumulate(dL1.begin(), dL1.end(), 0.0, std::plus<double>());
+
+    for (double& val: b1) {
+      val = val-eta*db1;
+    }
+    for (double& val: b2) {
+      val = val-eta*db2;
+    }
+    for (std::size_t k = 0; k < W1.size(); ++k) {
+      W1[k] -= eta*dW1[k];
+    }
+    for (std::size_t k = 0; k < W2.size(); ++k) {
+      W2[k] -= eta*dW2[k];
+    } 
+  }
+  cnpy::npy_save(
+      out_loss,
+      loss.data(),
+      {loss.size()},
+      "w"
+  );
 }
