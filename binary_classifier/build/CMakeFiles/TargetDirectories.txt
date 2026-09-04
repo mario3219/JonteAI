@@ -1,4 +1,0 @@
-/home/jonathan/git-repos/JonteAI/binary_classifier/build/CMakeFiles/cnpy.dir
-/home/jonathan/git-repos/JonteAI/binary_classifier/build/CMakeFiles/app.dir
-/home/jonathan/git-repos/JonteAI/binary_classifier/build/CMakeFiles/edit_cache.dir
-/home/jonathan/git-repos/JonteAI/binary_classifier/build/CMakeFiles/rebuild_cache.dir
