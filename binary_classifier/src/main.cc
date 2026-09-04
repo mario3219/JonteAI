@@ -101,8 +101,8 @@ int main() {
   std::vector<double> dL1;
   std::vector<double> dW1;
   std::vector<double> dW2;
-  double db1;
-  double db2;
+  std::vector<double> db1(hidden_layer_size);
+  std::vector<double> db2(num_classes);
 
 
   for (double& w : W1) {
@@ -155,7 +155,13 @@ int main() {
       x_shape[0],
       num_classes
     );
-    db2 = accumulate(dL2out.begin(), dL2out.end(), 0.0, std::plus<double>());
+    std::fill(db2.begin(), db2.end(), 0.0);
+
+    for (std::size_t i = 0; i < num_examples; ++i) {
+        for (std::size_t j = 0; j < num_classes; ++j) {
+            db2[j] += dL2out[i * num_classes + j];
+        }
+    }
     dL1 = matmul(
       dL2out,
       transpose(W2, hidden_layer_size, num_classes),
@@ -163,10 +169,10 @@ int main() {
       num_classes,
       hidden_layer_size
     ); //shape num_classes, hidden_layer_size
-    for (double& val: dL1) {
-      if (val <= 0) {
-        val = 0;
-      }
+    for (std::size_t k = 0; k < dL1.size(); ++k) {
+        if (L1_in[k] <= 0.0) {
+            dL1[k] = 0.0;
+        }
     }
     dW1 = matmul(
       transpose(x, x_shape[0], x_shape[1]),
@@ -175,13 +181,18 @@ int main() {
       x_shape[0],
       hidden_layer_size
     ); //shape x_shape[1], hidden_layer_size
-    db1 = accumulate(dL1.begin(), dL1.end(), 0.0, std::plus<double>());
-
-    for (double& val: b1) {
-      val = val-eta*db1;
+    std::fill(db1.begin(), db1.end(), 0.0);
+    for (std::size_t i = 0; i < num_examples; ++i) {
+        for (std::size_t j = 0; j < hidden_layer_size; ++j) {
+            db1[j] += dL1[i * hidden_layer_size + j];
+        }
     }
-    for (double& val: b2) {
-      val = val-eta*db2;
+
+    for (std::size_t j = 0; j < b1.size(); ++j) {
+        b1[j] -= eta * db1[j];
+    }
+    for (std::size_t j = 0; j < b2.size(); ++j) {
+        b2[j] -= eta * db2[j];
     }
     for (std::size_t k = 0; k < W1.size(); ++k) {
       W1[k] -= eta*dW1[k];
