@@ -127,10 +127,15 @@ int main() {
   std::vector<double> loss(iterations, 0.0);
 
   std::vector<double> L0 = x;
+
+  std::cout << "0% complete\n";
   for (int i = 0; i < iterations; i++) {
 
-    std::cout << i << "/" << iterations << std::endl;
-    
+    if ((i + 1) % (iterations / 20) == 0) {
+        int progress = (i + 1) * 100 / iterations;
+        std::cout << progress << "% complete\n";
+    }
+  
     std::vector<double> L1_in = add(
       matmul(L0, W1, x_shape[0], x_shape[1], hidden_layer_size),
       b1,
