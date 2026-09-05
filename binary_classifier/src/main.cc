@@ -80,6 +80,12 @@ int main() {
   fs::path input_x = src_dir / "data" / "x.npy";
   fs::path input_y = src_dir / "data" / "y.npy";
   fs::path out_loss = src_dir / "data" / "loss.npy";
+  fs::path out_L1 = src_dir / "data" / "L1.npy";
+  fs::path out_L2 = src_dir / "data" / "L2.npy";
+  fs::path out_W1 = src_dir / "data" / "W1.npy";
+  fs::path out_W2 = src_dir / "data" / "W2.npy";
+  fs::path out_b1 = src_dir / "data" / "b1.npy";
+  fs::path out_b2 = src_dir / "data" / "b2.npy";
 
   auto [x, x_shape] = read<double,double>(input_x);
   auto [y, y_shape] = read<int64_t,double>(input_y);
@@ -96,6 +102,9 @@ int main() {
   std::vector<double> b1(hidden_layer_size, 0.0);
   std::vector<double> W2(hidden_layer_size * num_classes);
   std::vector<double> b2(num_classes, 0.0);
+
+  std::vector<double> L1_out;
+  std::vector<double> L2_out;
 
   std::vector<double> dL2out;
   std::vector<double> dL1;
@@ -128,7 +137,7 @@ int main() {
       x_shape[0], hidden_layer_size
     ); // shape x_shape[0], hidden_layer_size
  
-    std::vector<double> L1_out = relu(L1_in);
+    L1_out = relu(L1_in);
 
     std::vector<double> L2_in = add(
       matmul(L1_out, W2, x_shape[0], hidden_layer_size, num_classes),
@@ -136,7 +145,7 @@ int main() {
       x_shape[0], num_classes
     ); // shape x_shape[0], num_classes
 
-    std::vector<double> L2_out = softmax(
+    L2_out = softmax(
       L2_in, x_shape[0], num_classes
     ); // shape x_shape[0], num_classes
     loss[i] = cross_entropy(L2_out, y, num_examples, num_classes);
@@ -207,4 +216,11 @@ int main() {
       {loss.size()},
       "w"
   );
+  cnpy::npy_save(out_loss,loss.data(),{loss.size()},"w");
+  cnpy::npy_save(out_L1,L1_out.data(),{L1_out.size()},"w");
+  cnpy::npy_save(out_L2,L2_out.data(),{L2_out.size()},"w");
+  cnpy::npy_save(out_W1,W1.data(),{W1.size()},"w");
+  cnpy::npy_save(out_W2,W2.data(),{W2.size()},"w");
+  cnpy::npy_save(out_b1,b1.data(),{b1.size()},"w");
+  cnpy::npy_save(out_b2,b2.data(),{b2.size()},"w");
 }
