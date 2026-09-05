@@ -5,7 +5,4 @@ My own implementation of a dense feed-forward network in C++.
 
 ---
 
-## Notes
-
-* A matrix class to contain the vector and shapes
-
+![Filter operations](figures/backpropagation.png)

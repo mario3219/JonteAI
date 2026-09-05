@@ -1,19 +1,14 @@
-#ifndef LAYER
-#define LAYER
+#ifndef LAYER_H
+#define LAYER_H
 
 #include <vector>
-#include <utility>
-#include "matrix.h"
 
 class Layer {
   public:
     Layer(int input_dim, int hidden_layer_size);
-    std::pair<int,int> shape();
-    std::vector<double> forward(const std::vector<double>& input);
-    std::vector<double> backward(const std::vector<double>& input);
-    
+    std::vector<double> operator[](size_t row);
   private:
-    Matrix W;
+    std::vector<std::vector<double>> W;
     std::vector<double> b;
 };
 
