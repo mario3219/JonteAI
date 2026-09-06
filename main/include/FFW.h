@@ -23,14 +23,19 @@ public:
       );
     }
 
-    void fit(const int& iterations, const double& eta);
+    void fit(
+        const std::vector<std::vector<double>>& x,
+        const std::vector<std::vector<double>>& y,
+        const int& iterations,
+        const double& eta
+    );
+
     std::vector<std::vector<double>> operator()(
         const std::vector<std::vector<double>>& input
     );
 
 private:
     std::vector<std::unique_ptr<Layer>> layers;
-    std::vector<std::vector<double>> Qs;
     std::vector<double> loss_arr;
     std::unique_ptr<Loss> loss_function;
 };

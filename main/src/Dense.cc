@@ -22,6 +22,7 @@ Dense::Dense(std::size_t input_dim, std::size_t hidden_layer_size):
 std::vector<std::vector<double>> Dense::forward(
     const std::vector<std::vector<double>>& input
 ) {
+    Q = input;
     return add(matmul(input,W), b);
 }
 

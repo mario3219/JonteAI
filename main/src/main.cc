@@ -35,5 +35,7 @@ int main() {
 
   auto y_hat = model(x);
 
+  model.fit(x, y, 10, 0.01);
+
   return 0;
 }

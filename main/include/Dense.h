@@ -18,6 +18,7 @@ class Dense : public Layer {
 
     std::vector<std::vector<double>> W;
     std::vector<std::vector<double>> b;
+    std::vector<std::vector<double>> Q_prev;
 };
 
 #endif
