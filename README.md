@@ -1,7 +1,51 @@
 # JonteAI
-My own implementation of a dense feed-forward network in C++.
+A fully functional C++ implementation of a Feed-forward Dense Neural Network. Algorithms are derived from literature.
 
 Source: pp.133-145. MACHINE LEARNING, A First Course for Engineers and Scientists. Lindholm, A. Wahlström, N. Lindsted, F. Schön, T.
+
+To use the library, include valid model type and layers.
+
+# Guide
+
+```
+#include "FFW.h"
+#include "Utils.h"
+#include "Dense.h"
+#include "ReLu.h"
+#include "Softmax.h"
+#include "CrossEntropy.h"
+```
+
+Then, declare model parameters.
+
+```
+int input_dim = x[0].size();
+int hidden_layer_size = 64;
+int num_classes = 2;
+int iterations = 25000;
+double eta = 0.01;
+```
+
+Now you can initialize your model and configure layers however you like.
+
+```
+model.add(Dense(input_dim, 64));
+model.add(ReLu());
+model.add(Dense(64, 32));
+model.add(ReLu());
+model.add(Dense(32, num_classes));
+model.add(Softmax());
+model.loss(CrossEntropy());
+
+model.fit(x, y, iterations, eta);
+save(output_loss, model.get_loss());
+```
+
+---
+
+# Development Notes
+
+The framework features no GPU CUDA support or CPU multi-threading, or efficient memory caching. The framework is purely single-threaded and is very slow.
 
 ---
 
