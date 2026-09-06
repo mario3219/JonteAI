@@ -1,8 +1,9 @@
-#include "layer.h"
 #include <vector>
 #include <random>
 
-Layer::Layer(int input_dim, int hidden_layer_size): 
+#include "Dense.h"
+
+Dense::Dense(std::size_t input_dim, std::size_t hidden_layer_size): 
   W(input_dim,
   std::vector<double>(hidden_layer_size)),
   b(hidden_layer_size, 0.0)
@@ -16,6 +17,15 @@ Layer::Layer(int input_dim, int hidden_layer_size):
     }
 }
 
-std::vector<double> Layer::operator[](size_t row) {
-  return W[row];
+std::vector<std::vector<double>> Dense::forward(
+    const std::vector<std::vector<double>>& input
+) {
+    return input;
+}
+
+std::vector<std::vector<double>> Dense::backward(
+    const std::vector<std::vector<double>>& gradient,
+    double eta
+) {
+    return gradient;
 }
