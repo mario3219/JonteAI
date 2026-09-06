@@ -3,9 +3,9 @@ A fully functional C++ implementation of a Feed-forward Dense Neural Network. Al
 
 Source: pp.133-145. MACHINE LEARNING, A First Course for Engineers and Scientists. Lindholm, A. Wahlström, N. Lindsted, F. Schön, T.
 
-To use the library, include valid model type and layers.
-
 # Guide
+
+To use the library, include valid model type and layers.
 
 ```
 #include "FFW.h"
