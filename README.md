@@ -7,4 +7,4 @@ Source: pp.133-145. MACHINE LEARNING, A First Course for Engineers and Scientist
 
 # The Math
 
-$\theta=[vec(W^{(1)})^T \ b^{(1)T} \ ... \ vec(W^{(L)})^T \ b^{(L)T}]^T$
+$\theta=[vec(W^{(1)})^T b^{(1)T} vec(W^{(L)})^T \ b^{(L)T}]^T$
