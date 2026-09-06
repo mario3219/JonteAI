@@ -22,12 +22,17 @@ void FFW::fit(
         std::cout << progress << "% complete\n";
     }
 
-    std::vector<std::vector<double>> y_hat = x;
+    auto y_hat = x;
 
     for (auto& layer: layers) {
       y_hat = layer->forward(y_hat);
     }
     loss_arr[i] = (*loss_function)(y_hat,y);
+
+    auto dL = (*loss_function).backward(y_hat,y);
+    for (auto it = layers.rbegin(); it != layers.rend(); ++it) {
+      dL = (*it)->backward(dL, eta);
+    }
   }
   return;
 }
@@ -40,4 +45,8 @@ std::vector<std::vector<double>> FFW::operator()(
     output = layer->forward(output);
   }
   return output;
+}
+
+std::vector<double> FFW::get_loss() {
+  return loss_arr;
 }

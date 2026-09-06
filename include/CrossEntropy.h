@@ -6,7 +6,7 @@
 #include <cmath>
 
 class CrossEntropy : public Loss {
-public:
+  public:
     double operator()(
         const std::vector<std::vector<double>>& y_hat,
         const std::vector<std::vector<double>>& y
@@ -19,6 +19,24 @@ public:
           loss += -std::log(p);
         }
         return loss/num_examples;
+    }
+
+    std::vector<std::vector<double>> backward(
+        const std::vector<std::vector<double>>& y_hat,
+        const std::vector<std::vector<double>>& y
+    ) override {
+      std::size_t num_examples = y_hat.size();
+      std::size_t num_classes = y_hat[0].size();
+      std::vector<std::vector<double>> dZ = y_hat;
+      for (std::size_t i = 0; i < num_examples; ++i) {
+        dZ[i][y[0][i]] -= 1.0;
+      }
+      for (auto& row: dZ) {
+        for (double& val: row) {
+          val = val/static_cast<double>(num_examples);
+        }
+      }
+      return dZ;
     }
 };
 

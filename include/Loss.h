@@ -11,6 +11,11 @@ public:
         const std::vector<std::vector<double>>& y_hat,
         const std::vector<std::vector<double>>& y
     ) = 0;
+
+    virtual std::vector<std::vector<double>> backward(
+        const std::vector<std::vector<double>>& y_hat,
+        const std::vector<std::vector<double>>& y
+    ) = 0;
 };
 
 #endif

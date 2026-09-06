@@ -98,6 +98,7 @@ $$
 ### Derivative of softmax and cross-entropy
 
 Literature explains how softmax derivative becomes Jacobian, meaning that each output depends on every input.
+
 $$
 J=diag(\hat{y})-\hat{y}\hat{y}^T
 $$

@@ -67,4 +67,13 @@ std::vector<std::vector<outdtype>> read(const fs::path& input) {
     return matrix;
 }
 
+void save(const fs::path& output, std::vector<double> data) {
+  cnpy::npy_save(
+      output,
+      data.data(),
+      {data.size()},
+      "w"
+  );
+}
+
 #endif

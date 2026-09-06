@@ -34,6 +34,8 @@ public:
         const std::vector<std::vector<double>>& input
     );
 
+    std::vector<double> get_loss();
+
 private:
     std::vector<std::unique_ptr<Layer>> layers;
     std::vector<double> loss_arr;
