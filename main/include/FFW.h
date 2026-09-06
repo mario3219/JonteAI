@@ -10,9 +10,14 @@ class FFW {
 public:
     FFW() = default;
 
-    void add(std::unique_ptr<Layer> layer);
-
+    template <typename LayerType>
+    void add(LayerType layer) {
+        layers.push_back(std::make_unique<LayerType>(layer));
+    }
     void train(const int& iterations, const double& eta);
+    std::vector<std::vector<double>> operator()(
+        const std::vector<std::vector<double>>& input
+    );
 
 private:
     std::vector<std::unique_ptr<Layer>> layers;

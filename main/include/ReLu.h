@@ -1,12 +1,10 @@
-#ifndef DENSE_H
-#define DENSE_H
+#ifndef RELU_H
+#define RELU_H
 
 #include "Layer.h"
 
-class Dense : public Layer {
-  public:
-    Dense(std::size_t input_dim, std::size_t hidden_layer_size);
-
+class ReLu : public Layer {
+public:
     std::vector<std::vector<double>> forward(
         const std::vector<std::vector<double>>& input
     ) override;
@@ -15,9 +13,6 @@ class Dense : public Layer {
         const std::vector<std::vector<double>>& gradient,
         double eta
     ) override;
-
-    std::vector<std::vector<double>> W;
-    std::vector<std::vector<double>> b;
 };
 
 #endif

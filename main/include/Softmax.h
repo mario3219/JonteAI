@@ -1,7 +1,9 @@
 #ifndef SOFTMAX_H
 #define SOFTMAX_H
 
-#include "layer.h"
+#include "Layer.h"
+
+#include <vector>
 
 class Softmax : public Layer {
 public:

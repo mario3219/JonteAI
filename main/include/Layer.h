@@ -1,6 +1,8 @@
 #ifndef LAYER_H
 #define LAYER_H
 
+#include <vector>
+
 class Layer {
 public:
     virtual ~Layer() = default;

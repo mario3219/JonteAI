@@ -1,10 +1,17 @@
 #include "FFW.h"
 
-void FFW::add(std::unique_ptr<Layer> layer)
-{
-    layers.push_back(std::move(layer));
-}
+#include <vector>
 
 void FFW::train(const int& iterations, const double& eta) {
   return;
+}
+
+std::vector<std::vector<double>> FFW::operator()(
+    const std::vector<std::vector<double>>& input) 
+{
+  auto output = input;
+  for (auto& layer: layers) {
+    output = layer->forward(output);
+  }
+  return output;
 }

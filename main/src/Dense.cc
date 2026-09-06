@@ -2,11 +2,13 @@
 #include <random>
 
 #include "Dense.h"
+#include "Math.h"
 
 Dense::Dense(std::size_t input_dim, std::size_t hidden_layer_size): 
   W(input_dim,
   std::vector<double>(hidden_layer_size)),
-  b(hidden_layer_size, 0.0)
+  b(1,
+  std::vector<double>(hidden_layer_size))
   {
     std::mt19937 gen(42);
     std::normal_distribution<double> dist(0.0, 0.01);
@@ -20,7 +22,7 @@ Dense::Dense(std::size_t input_dim, std::size_t hidden_layer_size):
 std::vector<std::vector<double>> Dense::forward(
     const std::vector<std::vector<double>>& input
 ) {
-    return input;
+    return add(matmul(input,W), b);
 }
 
 std::vector<std::vector<double>> Dense::backward(

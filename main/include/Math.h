@@ -4,14 +4,15 @@
 #include <cstddef> // for matmul function
 #include <vector>
 #include <cmath>
+#include <cassert>
 
 std::vector<std::vector<double>> matmul(
     const std::vector<std::vector<double>>& A,
     const std::vector<std::vector<double>>& B
 ) {
-    int m = A.size();
-    int n = A[0].size();
-    int p = B[0].size();
+    std::size_t m = A.size();
+    std::size_t n = A[0].size();
+    std::size_t p = B[0].size();
 
     assert(n == B.size());
 
@@ -33,20 +34,23 @@ std::vector<std::vector<double>> add(
     const std::vector<std::vector<double>>& A,
     const std::vector<std::vector<double>>& B
 ) {
-  int n = A[0].size();
-  assert(n == B.size());
-  std::vector<double> C(m*n);
+  std::size_t m = A.size();
+  std::size_t n = A[0].size();
+  assert(n == B[0].size());
+  std::vector<std::vector<double>> C(m, std::vector<double>(n));
   for (std::size_t i = 0; i < m; ++i) {
     for (std::size_t k = 0; k < n; ++k) {
-      C[i][k] = A[n][k]+B[k];
+      C[i][k] = A[i][k]+B[0][k];
     }
   }
   return C;
 }
 
-std::vector<double> transpose(
+std::vector<std::vector<double>> transpose(
     const std::vector<std::vector<double>>& A
 ) {
+    std::size_t rows = A.size();
+    std::size_t cols = A[0].size();
     std::vector<std::vector<double>> AT(cols, std::vector<double>(rows));
     for (std::size_t i = 0; i < rows; ++i) {
         for (std::size_t j = 0; j < cols; ++j) {
