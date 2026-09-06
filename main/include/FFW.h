@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "Layer.h"
+#include "Loss.h"
 
 class FFW {
 public:
@@ -14,7 +15,15 @@ public:
     void add(LayerType layer) {
         layers.push_back(std::make_unique<LayerType>(layer));
     }
-    void train(const int& iterations, const double& eta);
+
+    template<typename LossType>
+    void loss(LossType loss) {
+      loss_function = std::make_unique<LossType>(
+          std::move(loss)
+      );
+    }
+
+    void fit(const int& iterations, const double& eta);
     std::vector<std::vector<double>> operator()(
         const std::vector<std::vector<double>>& input
     );
@@ -22,7 +31,8 @@ public:
 private:
     std::vector<std::unique_ptr<Layer>> layers;
     std::vector<std::vector<double>> Qs;
-    std::vector<double> loss;
+    std::vector<double> loss_arr;
+    std::unique_ptr<Loss> loss_function;
 };
 
 #endif

@@ -2,7 +2,7 @@
 
 #include <vector>
 
-void FFW::train(const int& iterations, const double& eta) {
+void FFW::fit(const int& iterations, const double& eta) {
   return;
 }
 

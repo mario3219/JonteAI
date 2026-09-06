@@ -28,8 +28,9 @@ std::vector<std::vector<double>> Softmax::forward(
 }
 
 std::vector<std::vector<double>> Softmax::backward(
-    const std::vector<std::vector<double>>& gradient,
+    const std::vector<std::vector<double>>& Z,
     double eta
 ) {
-  return gradient;
+  dZ = Z;
+  return Z;
 }

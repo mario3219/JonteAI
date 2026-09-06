@@ -8,6 +8,7 @@
 #include "Dense.h"
 #include "ReLu.h"
 #include "Softmax.h"
+#include "CrossEntropy.h"
 
 namespace fs = std::filesystem;
 
@@ -25,6 +26,8 @@ int main() {
   int num_classes = 2;
 
   FFW model;
+  model.loss(CrossEntropy());
+
   model.add(Dense(input_dim, 64));
   model.add(ReLu());
   model.add(Dense(64, num_classes));
