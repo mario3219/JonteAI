@@ -1,5 +1,5 @@
 # JonteAI
-A fully functional C++ implementation of a Feed-forward Dense Neural Network. Algorithms are derived from literature.
+A from-scratch C++ framework for building and training feed-forward neural networks. Forward propagation, backpropagation, loss functions, and optimization are implemented directly from their mathematical definitions without external machine-learning frameworks.
 
 Source: pp.133-145. MACHINE LEARNING, A First Course for Engineers and Scientists. Lindholm, A. Wahlström, N. Lindsted, F. Schön, T.
 
