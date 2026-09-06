@@ -10,8 +10,7 @@ public:
     ) override;
 
     std::vector<std::vector<double>> backward(
-        const std::vector<std::vector<double>>& gradient,
-        double eta
+        const std::vector<std::vector<double>>& gradient
     ) override;
 };
 

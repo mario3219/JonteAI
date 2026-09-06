@@ -28,8 +28,7 @@ std::vector<std::vector<double>> Softmax::forward(
 }
 
 std::vector<std::vector<double>> Softmax::backward(
-    const std::vector<std::vector<double>>& Z,
-    double eta
+    const std::vector<std::vector<double>>& Z
 ) {
     std::size_t rows = y_hat.size();
     std::size_t cols = y_hat[0].size();

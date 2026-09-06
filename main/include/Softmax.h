@@ -12,8 +12,7 @@ class Softmax : public Layer {
     ) override;
 
     std::vector<std::vector<double>> backward(
-        const std::vector<std::vector<double>>& Z,
-        double eta
+        const std::vector<std::vector<double>>& Z
     ) override;
   private:
     std::vector<std::vector<double>> dZ;
