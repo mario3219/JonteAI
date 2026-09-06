@@ -94,3 +94,20 @@ $$
 $$
 \rightarrow \frac{\partial J}{\partial z_j^{(l)}}=\frac{\partial J}{\partial q_j^{(l)}} h'(z_j^{(l)})
 $$
+
+### Derivative of softmax and cross-entropy
+
+Literature explains how softmax derivative becomes Jacobian, meaning that each output depends on every input.
+$$
+J=diag(\hat{y})-\hat{y}\hat{y}^T
+$$
+
+Luckily the combination of softmax+cross-entropy leads to a collapse of derivatives.
+
+$$
+\frac{\partial L}{\partial z_{ij}}=\frac{\hat{y_{ij}}-y_{ij}}{N}
+$$
+
+And so the algorithm mentioned in literature is then followed:
+
+![Algorithm](figures/algorithm.png)
